@@ -26,8 +26,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mUserName = (TextView) findViewById(R.id.user_name);
         mMainContent = (RelativeLayout) findViewById(R.id.main_content);
         mProgress = (ProgressBar) findViewById(R.id.loading_view);
-        Button toFriendsBtn = (Button) findViewById(R.id.to_friends_activity);
-        toFriendsBtn.setOnClickListener(this);
 
         Button toFriendsOptimisedBtn = (Button) findViewById(R.id.to_friends_activity_optimised);
         toFriendsOptimisedBtn.setOnClickListener(this);
@@ -44,9 +42,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.to_friends_activity:
-                toFriends();
-                break;
             case R.id.to_friends_activity_optimised:
                 toFriendsOptimised();
                 break;
@@ -84,10 +79,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mMainContent.setVisibility(View.GONE);
     }
 
-    private void toFriends() {
-        Intent friendsIntent = new Intent(this, FriendsActivity.class);
-        startActivity(friendsIntent);
-    }
 
     private void toFriendsOptimised() {
         Intent friendsIntent = new Intent(this, FriendsActivityOptimised.class);

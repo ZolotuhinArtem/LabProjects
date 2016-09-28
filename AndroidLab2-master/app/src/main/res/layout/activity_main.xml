@@ -43,16 +43,10 @@
             android:orientation="vertical">
 
             <Button
-                android:id="@+id/to_friends_activity"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/friends"/>
-
-            <Button
                 android:id="@+id/to_friends_activity_optimised"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/friends_optimised"/>
+                android:text="@string/friends"/>
             <Button
                 android:id="@+id/to_dialog_activity"
                 android:layout_width="wrap_content"
