@@ -73,80 +73,42 @@ public class NewsActivity extends AppCompatActivity {
         @Override
         public void onBindViewHolder(NewsViewHolder holder, int position) {
             if (holder instanceof NewsViewHolder){
-                VkNewsItem vkn = newsList.get(position);
-                if (vkn != null){
+                VkNewsItem vkNewsItem = newsList.get(position);
+                if (vkNewsItem != null){
                     String dateString;
-                    Date date = new Date(vkn.getDate() * 1000);
+                    Date date = new Date(vkNewsItem.getDate() * 1000);
                     DateFormat dateFormat = new SimpleDateFormat("HH:mm dd.MM.yyyy ");
                     dateString = dateFormat.format(date);
 
                     holder.clearImage();
 
-                    holder.getTitle().setText(vkn.getPublisher().getName());
+                    holder.getTitle().setText(vkNewsItem.getPublisher().getName());
                     holder.getDate().setText(dateString);
-                    holder.getText().setText(vkn.getText());
+                    holder.getText().setText(vkNewsItem.getText());
                     holder.getLikes().setText(R.string.likes);
-                    VkLikes likes = vkn.getLikes();
+                    VkLikes likes = vkNewsItem.getLikes();
                     if (likes != null) {
                         int countLikes = 0;
                         countLikes = likes.getCount();
                         holder.getLikes().append(Integer.toString(countLikes));
                     }
-
-
-                    Glide.with(mContext).load(vkn.getPublisher().getPhoto_50())
+                    Glide.with(mContext).load(vkNewsItem.getPublisher().getPhoto_50())
                             .fitCenter()
                             .into(((NewsViewHolder) holder).getPhoto());
                     int k;
-                    List<VkAttachments> lvka = vkn.getAttachments();
-                    if (lvka != null){
-                        k = lvka.size();
+                    List<VkAttachments> listVkAttachments = vkNewsItem.getAttachments();
+                    if (listVkAttachments != null){
+                        k = listVkAttachments.size();
                         int j;
                         j = 0;
                         String[] photos = new String[k];
-                        for(VkAttachments i: lvka){
+                        for(VkAttachments i: listVkAttachments){
                             String photo = null;
                             if (i != null) {
-                                VkPhoto pht;
-                                pht = i.getPhoto();
-                                if (pht != null) {
-                                    photo = pht.getPhoto_2560();
-                                    if (photo == null) {
-                                        photo = pht.getPhoto_1280();
-                                        if (photo == null) {
-                                            photo = pht.getPhoto_807();
-                                            if (photo == null) {
-                                                photo = pht.getPhoto_604();
-                                                if (photo == null) {
-                                                    photo = pht.getPhoto_130();
-                                                    if (photo == null) {
-                                                        photo = pht.getPhoto_75();
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
+                                photo = getMaxPhoto(i.getPhoto());
                             }
                             if (photo != null){
-                                ImageView img = null;
-                                switch (j){
-                                    case 0:
-                                        img = holder.getImg1();
-                                        break;
-                                    case 1:
-                                        img = holder.getImg2();
-                                        break;
-                                    case 2:
-                                        img = holder.getImg3();
-                                        break;
-                                    case 3:
-                                        img = holder.getImg4();
-                                        break;
-                                    case 4:
-                                        img = holder.getImg5();
-                                        break;
-                                }
+                                ImageView img = getImageViewFromNewsViewHolder(holder, j);
                                 if (img != null){
                                     img.setVisibility(View.VISIBLE);
                                     Glide.with(mContext).load(photo)
@@ -161,7 +123,49 @@ public class NewsActivity extends AppCompatActivity {
 
             }
         }
-
+        public String getMaxPhoto(VkPhoto vkPhoto){
+            String result = null;
+            if (vkPhoto != null) {
+                result = vkPhoto.getPhoto_2560();
+                if (result == null) {
+                    result = vkPhoto.getPhoto_1280();
+                    if (result == null) {
+                        result = vkPhoto.getPhoto_807();
+                        if (result == null) {
+                            result = vkPhoto.getPhoto_604();
+                            if (result == null) {
+                                result = vkPhoto.getPhoto_130();
+                                if (result == null) {
+                                    result = vkPhoto.getPhoto_75();
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            return result;
+        }
+        public ImageView getImageViewFromNewsViewHolder(NewsViewHolder holder, int j){
+            ImageView img = null;
+            switch (j){
+                case 0:
+                    img = holder.getImg1();
+                    break;
+                case 1:
+                    img = holder.getImg2();
+                    break;
+                case 2:
+                    img = holder.getImg3();
+                    break;
+                case 3:
+                    img = holder.getImg4();
+                    break;
+                case 4:
+                    img = holder.getImg5();
+                    break;
+            }
+            return img;
+        }
         @Override
         public int getItemCount() {
             return newsList == null ? 0:newsList.size();
