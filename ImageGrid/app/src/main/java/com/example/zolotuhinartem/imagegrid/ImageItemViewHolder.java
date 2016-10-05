@@ -20,6 +20,7 @@ public class ImageItemViewHolder extends RecyclerView.ViewHolder {
         int widthDevice = itemView.getContext().getResources().getDisplayMetrics().widthPixels;
         float width = widthDevice;
         width /= (float) columns;
+        //немного костылей
         lp.width = (int)Math.round(width) - 3;
         lp.height = (int)Math.round(width) - 3;
 
