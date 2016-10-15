@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="@dimen/number_item_horizontal_margin"
+    android:layout_marginRight="@dimen/number_item_horizontal_margin"
+    android:layout_marginTop="@dimen/number_item_vertical_margin"
+    android:layout_marginBottom="@dimen/number_item_vertical_margin">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:id="@+id/tv_number_item_number"
+        android:text="00000000000"
+        android:textColor="@color/numberText"
+        android:textSize="@dimen/number_item_text_size"
+        />
+
+</android.support.v7.widget.CardView>
