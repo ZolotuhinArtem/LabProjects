@@ -27,7 +27,7 @@ public class ContactViewPagerFragment extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        viewPager = (ViewPager) view.findViewById(R.id.fragment_view_pager);
+        viewPager = (ViewPager) view.findViewById(R.id.vp);
         Activity activity = getActivity();
         if (activity != null) {
             ContactFragmentPagerAdapter adapter = new ContactFragmentPagerAdapter(getActivity().getSupportFragmentManager(), 2);

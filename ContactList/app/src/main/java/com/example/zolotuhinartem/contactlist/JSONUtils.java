@@ -20,7 +20,8 @@ public class JSONUtils {
         if ((sharedPreferences != null) && (key != null)) {
 
             try {
-                JSONArray jsonArray = new JSONArray(sharedPreferences.getString(key, ""));
+
+                JSONArray jsonArray = new JSONArray(sharedPreferences.getString(key, "[]"));
                 ArrayList<Contact> list = new ArrayList<>();
                 for (int i = 0; i < jsonArray.length(); i++) {
                     list.add(new Contact(jsonArray.getString(i)));
