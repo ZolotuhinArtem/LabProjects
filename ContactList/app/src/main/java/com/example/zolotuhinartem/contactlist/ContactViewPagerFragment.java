@@ -16,6 +16,8 @@ import android.view.ViewGroup;
 public class ContactViewPagerFragment extends Fragment {
 
     private ViewPager viewPager;
+    private ContactFragmentPagerAdapter contactFragmentPagerAdapter;
+
 
     @Nullable
     @Override
@@ -30,9 +32,27 @@ public class ContactViewPagerFragment extends Fragment {
         viewPager = (ViewPager) view.findViewById(R.id.vp);
         Activity activity = getActivity();
         if (activity != null) {
-            ContactFragmentPagerAdapter adapter = new ContactFragmentPagerAdapter(getActivity().getSupportFragmentManager(), 2);
-            viewPager.setAdapter(adapter);
+            contactFragmentPagerAdapter = new ContactFragmentPagerAdapter(getActivity()
+                    .getSupportFragmentManager(), 2);
+
+            viewPager.setAdapter(contactFragmentPagerAdapter);
         }
 
+    }
+    public ContactFragment getContactFragment(){
+        if (contactFragmentPagerAdapter != null){
+            return contactFragmentPagerAdapter.getContactFragment();
+        }
+        else{
+            return null;
+        }
+    }
+    public ContactDeletedFragment getContactDeletedFragment(){
+        if (contactFragmentPagerAdapter != null){
+            return contactFragmentPagerAdapter.getContactDeletedFragment();
+        }
+        else{
+            return null;
+        }
     }
 }

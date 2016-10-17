@@ -46,6 +46,10 @@ public class ContactAdapter extends android.support.v7.widget.RecyclerView.Adapt
         notifyDataSetChanged();
     }
 
+    public List<Contact> getList() {
+        return list;
+    }
+
     public void setContactOnClickListener(ContactOnClickListener contactOnClickListener) {
         this.contactOnClickListener = contactOnClickListener;
     }

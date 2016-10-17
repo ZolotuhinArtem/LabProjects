@@ -6,6 +6,7 @@
     <dimen name="information_text_size">24dp</dimen>
     <dimen name="number_item_text_size">20sp</dimen>
     <dimen name="information_button_text_size">16sp</dimen>
-    <dimen name="number_item_horizontal_margin">2dp</dimen>
-    <dimen name="number_item_vertical_margin">3dp</dimen>
+    <dimen name="number_item_horizontal_margin">1dp</dimen>
+    <dimen name="number_item_vertical_margin">0.5dp</dimen>
+    <dimen name="number_item_padding">2dp</dimen>
 </resources>

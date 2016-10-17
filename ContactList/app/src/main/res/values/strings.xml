@@ -5,4 +5,11 @@
     <string name="send_sms">Send SMS</string>
     <string name="number">Number</string>
     <string name="delete">Delete</string>
+    <string name="clear_all">Clear All</string>
+    <string name="generate">Generate</string>
+    <string name="dialog_delete_message">Delete?</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="add">Add</string>
+    <string name="random">Random</string>
 </resources>
