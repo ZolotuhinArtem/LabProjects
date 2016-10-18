@@ -27,13 +27,13 @@ public class ContactViewHolder extends RecyclerView.ViewHolder {
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    contactOnClickListener.onClick(contact);
+                    contactOnClickListener.onContactClick(contact);
                 }
             });
             itemView.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
-                    contactOnClickListener.onLongClick(contact);
+                    contactOnClickListener.onContactLongClick(contact);
                     return true;
                 }
             });

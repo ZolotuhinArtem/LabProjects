@@ -6,5 +6,6 @@ package com.example.zolotuhinartem.contactlist;
 
 public interface OnContactClickListener {
     void onContactClick(Contact contact);
+
     void onDeletedContactClick(Contact contact);
 }

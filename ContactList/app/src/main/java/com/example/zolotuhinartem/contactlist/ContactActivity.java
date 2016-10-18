@@ -4,10 +4,8 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.TextView;
-import android.widget.Toast;
 
-public class ContactActivity extends AppCompatActivity implements OnContactClickListener{
-    public static final String LOG_TAG = "MY_TAG";
+public class ContactActivity extends AppCompatActivity implements OnContactClickListener {
     private boolean isLandscape;
 
     @Override
@@ -31,13 +29,11 @@ public class ContactActivity extends AppCompatActivity implements OnContactClick
 
     @Override
     public void onContactClick(Contact contact) {
-        //Toast.makeText(ContactActivity.this, contact.getNumber(), Toast.LENGTH_SHORT).show();
-        if (isLandscape){
+        if (isLandscape) {
             ContactInformationFragment fragment = (ContactInformationFragment) getSupportFragmentManager().findFragmentByTag(ContactInformationFragment.class.getName());
             TextView tvNumber = (TextView) fragment.getView().findViewById(R.id.tv_fragment_information_number);
             tvNumber.setText(contact.getNumber());
-        }
-        else{
+        } else {
             Intent intent = new Intent(ContactActivity.this, InformationActivity.class);
             contact.fillIntent(intent);
             startActivity(intent);

@@ -2,7 +2,6 @@ package com.example.zolotuhinartem.contactlist;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -12,9 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 /**
  * Created by zolotuhinartem on 15.10.16.
@@ -30,9 +27,9 @@ public class ContactDeletedFragment extends Fragment implements ContactOnClickLi
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        try{
+        try {
             onContactClickListener = (OnContactClickListener) context;
-        }catch (ClassCastException e) {
+        } catch (ClassCastException e) {
             throw new ClassCastException(context.toString() + " must implement OnContactClickListener");
         }
     }
@@ -52,7 +49,6 @@ public class ContactDeletedFragment extends Fragment implements ContactOnClickLi
     }
 
 
-
     protected void doViewCreated(String dataArrayName, int listId, View view, @Nullable Bundle savedInstanceState) {
 
         recyclerView = (RecyclerView) view.findViewById(listId);
@@ -68,21 +64,72 @@ public class ContactDeletedFragment extends Fragment implements ContactOnClickLi
             contactAdapter.setContactOnClickListener(this);
         }
     }
-    public void addContact(Contact contact){
-        if (dataNumberList != null){
+
+    // --------------------------ADD and DELETE number-------------------------------
+    public void addContact(Contact contact) {
+        if (dataNumberList != null) {
             dataNumberList.add(contact);
             List<Contact> list = dataNumberList.getAll();
             contactAdapter.setList(list);
         }
     }
+
+    public void deleteNumber(Contact contact) {
+        if (contactAdapter != null) {
+            List<Contact> list = contactAdapter.getList();
+            list.remove(contact);
+            if (dataNumberList != null) {
+                dataNumberList.remove(contact);
+            }
+            contactAdapter.setList(list);
+
+        }
+    }
+
+    public void restoreNumber(Contact contact) {
+        if (contactAdapter != null) {
+            this.deleteNumber(contact);
+            ContactViewPagerFragment contactViewPagerFragment = (ContactViewPagerFragment) getActivity()
+                    .getSupportFragmentManager()
+                    .findFragmentByTag(ContactViewPagerFragment.class.getName());
+
+            if (contactViewPagerFragment != null) {
+                ContactFragment contactFragment = contactViewPagerFragment.getContactFragment();
+                if (contactFragment != null) {
+                    contactFragment.addContact(contact);
+                }
+            }
+        }
+    }
+
+    //---------------------------------------------------------------------------------------
     //LISTENER
     @Override
-    public void onClick(Contact contact) {
-
+    public void onContactClick(Contact contact) {
+        onContactLongClick(contact);
     }
 
     @Override
-    public void onLongClick(Contact contact) {
+    public void onContactLongClick(final Contact contact) {
+        ContactDialogRestoreOrDelete dialog = new ContactDialogRestoreOrDelete();
+        dialog.setOnDialogClickListener(new ContactDialogRestoreOrDelete.OnDialogClickListener() {
+            @Override
+            public void onClick(int status) {
+                switch (status) {
+                    case ContactDialogRestoreOrDelete.CLICK_RESTORE:
+                        restoreNumber(contact);
+                        break;
+                    case ContactDialogRestoreOrDelete.CLICK_DELETE:
+                        deleteNumber(contact);
+                        break;
+                }
+            }
+        });
 
+        Bundle bundle = new Bundle();
+        bundle.putString(ContactDialogRestoreOrDelete.MESSAGE, contact.getNumber());
+        dialog.setArguments(bundle);
+
+        dialog.show(getActivity().getSupportFragmentManager(), ContactDialogRestoreOrDelete.class.getName());
     }
 }

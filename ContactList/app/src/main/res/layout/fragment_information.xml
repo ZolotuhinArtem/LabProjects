@@ -10,15 +10,29 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_margin="45dp"
-        android:text="00000000000"
         android:textColor="@color/numberText"
         android:textSize="@dimen/information_text_size" />
+
+    <Button
+        android:id="@+id/btn_fragment_information_call"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="@string/call"
+        android:textColor="@color/numberText"
+        android:textSize="@dimen/information_button_text_size" />
+
+    <EditText
+        android:id="@+id/et_fragment_information_sms"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/write_sms" />
 
     <Button
         android:id="@+id/btn_fragment_information_send_sms"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
+        android:layout_gravity="right"
         android:text="@string/send_sms"
         android:textColor="@color/numberText"
         android:textSize="@dimen/information_button_text_size" />

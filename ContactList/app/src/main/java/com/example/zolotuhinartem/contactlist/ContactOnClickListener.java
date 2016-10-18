@@ -5,6 +5,7 @@ package com.example.zolotuhinartem.contactlist;
  */
 
 public interface ContactOnClickListener {
-    void onClick(Contact contact);
-    void onLongClick(Contact contact);
+    void onContactClick(Contact contact);
+
+    void onContactLongClick(Contact contact);
 }

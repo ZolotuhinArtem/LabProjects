@@ -1,11 +1,9 @@
 package com.example.zolotuhinartem.contactlist;
 
+import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentStatePagerAdapter;
-import android.support.v4.view.PagerAdapter;
-import android.view.View;
 
 /**
  * Created by zolotuhinartem on 15.10.16.
@@ -17,16 +15,34 @@ public class ContactFragmentPagerAdapter extends FragmentStatePagerAdapter {
     private int countOfFragments;
     private ContactFragment contactFragment;
     private ContactDeletedFragment contactDeletedFragment;
+    private Context context;
 
-    public ContactFragmentPagerAdapter(FragmentManager fragmentManager, int countOfFragments) {
+    public ContactFragmentPagerAdapter(FragmentManager fragmentManager, int countOfFragments, Context context) {
         super(fragmentManager);
         this.fragmentManager = fragmentManager;
         this.countOfFragments = countOfFragments;
+        this.context = context;
     }
 
     @Override
     public int getCount() {
         return countOfFragments;
+    }
+
+    @Override
+    public CharSequence getPageTitle(int position) {
+        if (context != null) {
+            switch (position) {
+                case 0:
+                    return context.getString(R.string.contacts);
+                case 1:
+                    return context.getString(R.string.deleted_contacts);
+                default:
+                    return context.getString(R.string.contacts);
+            }
+        } else {
+            return "";
+        }
     }
 
     @Override

@@ -11,43 +11,44 @@ import android.widget.Button;
 import android.widget.TextView;
 
 /**
- * Created by zolotuhinartem on 17.10.16.
+ * Created by zolotuhinartem on 18.10.16.
  */
 
-public class ContactDialogDelete extends DialogFragment implements View.OnClickListener {
-
-    private Button btnYes, btnNo;
-    private OnDialogClickListener listener;
+public class ContactDialogRestoreOrDelete extends DialogFragment implements View.OnClickListener {
+    private Button btnRestore, btnDelete, btnCancel;
+    private ContactDialogRestoreOrDelete.OnDialogClickListener listener;
     private TextView tvNumber;
 
-    public static final int CLICK_YES = 1;
-    public static final int CLICK_NO = 0;
+    public static final int CLICK_RESTORE = 2;
+    public static final int CLICK_DELETE = 1;
+    public static final int CLICK_CANCEL = 0;
     public static final int CLICK_DISMISS = -1;
     public static final String MESSAGE = "message";
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.dialog_delete, null);
-        getDialog().setTitle(getString(R.string.dialog_delete_message));
-        btnYes = (Button) view.findViewById(R.id.btn_dialog_delete_yes);
-        btnNo = (Button) view.findViewById(R.id.btn_dialog_delete_no);
+        View view = inflater.inflate(R.layout.dialog_restore_or_delete, null);
+        getDialog().setTitle(getString(R.string.choose));
+        btnRestore = (Button) view.findViewById(R.id.btn_dialog_restore_or_delete_restore);
+        btnDelete = (Button) view.findViewById(R.id.btn_dialog_restore_or_delete_delete);
+        btnCancel = (Button) view.findViewById(R.id.btn_dialog_restore_or_delete_cancel);
 
-        btnYes.setOnClickListener(this);
-        btnNo.setOnClickListener(this);
+        btnRestore.setOnClickListener(this);
+        btnDelete.setOnClickListener(this);
+        btnCancel.setOnClickListener(this);
 
         Bundle bundle = getArguments();
         if (bundle != null) {
             String number = bundle.getString(MESSAGE);
             if (number != null) {
-                tvNumber = (TextView) view.findViewById(R.id.tv_dialog_delete_number);
+                tvNumber = (TextView) view.findViewById(R.id.tv_dialog_restore_or_delete_number);
                 if (tvNumber != null) {
                     tvNumber.setText(number);
                 }
 
             }
         }
-
 
         return view;
     }
@@ -66,7 +67,7 @@ public class ContactDialogDelete extends DialogFragment implements View.OnClickL
 
     }
 
-    public void setOnDialogClickListener(OnDialogClickListener listener) {
+    public void setOnDialogClickListener(ContactDialogRestoreOrDelete.OnDialogClickListener listener) {
         this.listener = listener;
 
     }
@@ -75,22 +76,26 @@ public class ContactDialogDelete extends DialogFragment implements View.OnClickL
     public void onClick(View v) {
         if (listener != null) {
             switch (v.getId()) {
-                case R.id.btn_dialog_delete_yes:
-                    listener.onClick(CLICK_YES);
+                case R.id.btn_dialog_restore_or_delete_restore:
+                    listener.onClick(CLICK_RESTORE);
                     dismiss();
                     break;
-                case R.id.btn_dialog_delete_no:
-                    listener.onClick(CLICK_NO);
+                case R.id.btn_dialog_restore_or_delete_delete:
+                    listener.onClick(CLICK_DELETE);
                     dismiss();
+                    break;
+                case R.id.btn_dialog_restore_or_delete_cancel:
+                    listener.onClick(CLICK_CANCEL);
+                    dismiss();
+                    break;
             }
         }
     }
 
     public interface OnDialogClickListener {
         /*
-        *   CLICK_YES, CLICK_NO, CLISK_DISMISS
+        *   CLICK_RESTORE, CLICK_DELETE, CLISK_CANCEL
          */
         void onClick(int status);
     }
-
 }

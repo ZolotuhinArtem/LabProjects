@@ -17,10 +17,12 @@ public class Contact {
     public String getNumber() {
         return number;
     }
-    public void fillIntent(Intent intent){
+
+    public void fillIntent(Intent intent) {
         intent.putExtra(KEY_NUMBER, this.number);
     }
-    public static Contact getFromIntent(Intent intent){
+
+    public static Contact getFromIntent(Intent intent) {
         return new Contact(intent.getStringExtra(KEY_NUMBER));
     }
 

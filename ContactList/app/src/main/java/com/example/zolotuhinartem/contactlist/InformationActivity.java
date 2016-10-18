@@ -1,6 +1,5 @@
 package com.example.zolotuhinartem.contactlist;
 
-import android.app.Fragment;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -12,7 +11,7 @@ public class InformationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_information);
 
-        if(findViewById(R.id.fl_activity_information_information) != null){
+        if (findViewById(R.id.fl_activity_information_information) != null) {
             ContactInformationFragment fragment = new ContactInformationFragment();
             Intent intent = getIntent();
             Contact contact = Contact.getFromIntent(intent);

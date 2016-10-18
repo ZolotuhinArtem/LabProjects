@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.view.PagerTabStrip;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,26 +34,27 @@ public class ContactViewPagerFragment extends Fragment {
         Activity activity = getActivity();
         if (activity != null) {
             contactFragmentPagerAdapter = new ContactFragmentPagerAdapter(getActivity()
-                    .getSupportFragmentManager(), 2);
+                    .getSupportFragmentManager(), 2, activity);
 
             viewPager.setAdapter(contactFragmentPagerAdapter);
         }
 
     }
-    public ContactFragment getContactFragment(){
-        if (contactFragmentPagerAdapter != null){
+
+    public ContactFragment getContactFragment() {
+        if (contactFragmentPagerAdapter != null) {
             return contactFragmentPagerAdapter.getContactFragment();
-        }
-        else{
+        } else {
             return null;
         }
     }
-    public ContactDeletedFragment getContactDeletedFragment(){
-        if (contactFragmentPagerAdapter != null){
+
+    public ContactDeletedFragment getContactDeletedFragment() {
+        if (contactFragmentPagerAdapter != null) {
             return contactFragmentPagerAdapter.getContactDeletedFragment();
-        }
-        else{
+        } else {
             return null;
         }
     }
+
 }

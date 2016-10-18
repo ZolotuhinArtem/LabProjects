@@ -7,8 +7,8 @@
     tools:context="com.example.zolotuhinartem.contactlist.ContactActivity">
 
     <FrameLayout
+        android:id="@+id/fl_activity_contact_view_pager"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/fl_activity_contact_view_pager"/>
+        android:layout_height="match_parent" />
 
 </RelativeLayout>

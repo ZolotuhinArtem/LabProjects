@@ -1,6 +1,5 @@
 package com.example.zolotuhinartem.contactlist;
 
-import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,7 +24,7 @@ public class ContactAdapter extends android.support.v7.widget.RecyclerView.Adapt
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        if (holder instanceof ContactViewHolder){
+        if (holder instanceof ContactViewHolder) {
             Contact contact = this.list.get(position);
             ((ContactViewHolder) holder).onBind(contact, this.contactOnClickListener);
 
