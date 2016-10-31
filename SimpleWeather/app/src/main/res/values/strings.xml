@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">SimpleWeather</string>
+    <string name="write_city">Write city</string>
+    <string name="write_country">Write country</string>
+    <string name="Cancel">Cancel</string>
+    <string name="Add">Add</string>
+</resources>
