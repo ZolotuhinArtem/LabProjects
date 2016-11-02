@@ -1,4 +1,4 @@
-package com.example.zolotuhinartem.simpleweather.citylist;
+package com.example.zolotuhinartem.simpleweather.recyclerviewobjects.city;
 
 import android.app.Activity;
 import android.support.v7.widget.RecyclerView;
@@ -21,6 +21,7 @@ public class CityAdapter extends RecyclerView.Adapter<CityViewHolder> {
     private List<City> list;
     private CityOnClickListener listener;
     private Activity activity;
+
 
     public CityAdapter(Activity activity){
         this.activity = activity;
@@ -69,6 +70,14 @@ public class CityAdapter extends RecyclerView.Adapter<CityViewHolder> {
     public void setList(List<City> list) {
         this.list = list;
         notifyDataSetChanged();
+    }
+    public void removeCity(City city) {
+        if (city != null) {
+            this.list.remove(city);
+            notifyDataSetChanged();
+        }
+
+
     }
 
     public CityOnClickListener getListener() {

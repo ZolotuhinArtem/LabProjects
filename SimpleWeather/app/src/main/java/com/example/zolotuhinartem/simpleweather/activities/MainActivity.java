@@ -10,15 +10,17 @@ import android.view.View;
 import android.widget.Button;
 
 import com.example.zolotuhinartem.simpleweather.R;
-import com.example.zolotuhinartem.simpleweather.citylist.CityAdapter;
+import com.example.zolotuhinartem.simpleweather.recyclerviewobjects.city.CityAdapter;
+import com.example.zolotuhinartem.simpleweather.recyclerviewobjects.city.CityOnClickListener;
 import com.example.zolotuhinartem.simpleweather.objects.City;
-import com.example.zolotuhinartem.simpleweather.objects.utils.CityIntentManager;
+import com.example.zolotuhinartem.simpleweather.objects.utils.CityManager;
 import com.example.zolotuhinartem.simpleweather.repositories.UserCityRepository;
+import com.example.zolotuhinartem.simpleweather.utils.SetToListConvertor;
 
 import java.util.List;
 
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener{
+public class MainActivity extends AppCompatActivity implements View.OnClickListener, CityOnClickListener{
 
     public static final int REQUEST_ADD_CITY_ACTIVITY = 0;
     public static final String SHARED_PREFERENCES_CITY = "shared_preferences_city";
@@ -33,11 +35,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
 
         sharedPreferences = getSharedPreferences(SHARED_PREFERENCES_CITY, MODE_PRIVATE);
-        List<City> list = UserCityRepository.getAll(sharedPreferences);
-
+        List<City> list = SetToListConvertor.setToList(UserCityRepository.getAll(sharedPreferences));
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.rv_main_activity);
         adapter = new CityAdapter(this);
         adapter.setList(list);
+        adapter.setListener(this);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
@@ -64,16 +66,35 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         switch (requestCode) {
             case REQUEST_ADD_CITY_ACTIVITY:
                 if (data != null) {
-                    City city = CityIntentManager.get(data);
+                    City city = CityManager.getFromIntent(data);
                     if (city != null) {
                         if ((this.adapter != null) && (sharedPreferences != null)) {
                             sharedPreferences = getSharedPreferences(SHARED_PREFERENCES_CITY, MODE_PRIVATE);
                             UserCityRepository.add(sharedPreferences, city);
-                            adapter.setList(UserCityRepository.getAll(sharedPreferences));
+
+                            List<City> list = SetToListConvertor.setToList(UserCityRepository.getAll(sharedPreferences));
+                            adapter.setList(list);
                         }
                     }
                 }
                 break;
+        }
+    }
+
+    @Override
+    public void onClick(City city) {
+        if (city != null) {
+            Intent intent = new Intent(this, WatchWeatherActivity.class);
+            intent = CityManager.fillIntent(intent, city);
+            startActivity(intent);
+        }
+    }
+
+    @Override
+    public void onDeleteClick(City city) {
+        if (city != null) {
+            UserCityRepository.remove(sharedPreferences, city);
+            adapter.removeCity(city);
         }
     }
 }

@@ -3,14 +3,14 @@ package com.example.zolotuhinartem.simpleweather.repositories;
 import android.content.SharedPreferences;
 
 import com.example.zolotuhinartem.simpleweather.objects.City;
-import com.example.zolotuhinartem.simpleweather.objects.utils.CityJsonManager;
+import com.example.zolotuhinartem.simpleweather.objects.utils.CityManager;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Created by zolotuhinartem on 29.10.16.
@@ -20,13 +20,13 @@ public class UserCityRepository {
 
     public static String KEY_CITY = "City";
 
-    public static List<City> getAll(SharedPreferences sharedPreferences) {
-        List<City> list = null;
+    public static Set<City> getAll(SharedPreferences sharedPreferences) {
+        Set<City> list = null;
         try {
             JSONArray jarray = new JSONArray(sharedPreferences.getString(KEY_CITY, "[]"));
-            list = new ArrayList<>(jarray.length());
+            list = new HashSet<>(jarray.length());
             for (int i = 0; i < jarray.length(); i++) {
-                City city = CityJsonManager.get((JSONObject) jarray.get(i));
+                City city = CityManager.getFromJson((JSONObject) jarray.get(i));
                 if (city != null) {
                     list.add(city);
                 }
@@ -43,10 +43,10 @@ public class UserCityRepository {
         boolean result = false;
 
         if (city != null) {
-            List<City> list = getAll(sharedPreferences);
+            Set<City> list = getAll(sharedPreferences);
 
             if (list == null) {
-                list = new ArrayList<>(1);
+                list = new HashSet<>(1);
             }
             list.add(city);
 
@@ -66,8 +66,8 @@ public class UserCityRepository {
         return true;
     }
 
-    public static boolean add(SharedPreferences sharedPreferences, List<City> list) {
-        List<City> oldList = getAll(sharedPreferences);
+    public static boolean add(SharedPreferences sharedPreferences, Set<City> list) {
+        Set<City> oldList = getAll(sharedPreferences);
         if (oldList == null) {
             oldList = list;
         } else {
@@ -87,7 +87,7 @@ public class UserCityRepository {
 
     public static boolean remove(SharedPreferences sharedPreferences, City city) {
         boolean result = false;
-        List<City> list = getAll(sharedPreferences);
+        Set<City> list = getAll(sharedPreferences);
         result = list.remove(city);
         if (result) {
             clear(sharedPreferences);
@@ -96,7 +96,7 @@ public class UserCityRepository {
         return result;
     }
 
-    private static JSONArray fillJsonArray(JSONArray jarray, List<City> list) {
+    private static JSONArray fillJsonArray(JSONArray jarray, Set<City> list) {
         if (jarray == null) {
             jarray = new JSONArray();
         }
@@ -104,7 +104,7 @@ public class UserCityRepository {
             for (City i : list) {
                 if (i != null) {
                     JSONObject jobject = new JSONObject();
-                    jobject = CityJsonManager.fill(jobject, i);
+                    jobject = CityManager.fillJson(jobject, i);
                     if (jobject != null) {
                         jarray.put(jobject);
                     }

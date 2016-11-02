@@ -7,23 +7,64 @@ import java.io.Serializable;
  */
 
 public class City{
-    private String city;
-    private String country;
+    private String id;
+    private String name;
+    private String lat;
+    private String lon;
+    private String countryCode;
 
-    public static final String ATTRIBUTE_CITY = "city_city";
-    public static final String ATTRIBUTE_COUNTRY = "city_country";
+    public static final String ATTRIBUTE_CITY_ID = "city_id";
+    public static final String ATTRIBUTE_CITY_NAME = "city_name";
+    public static final String ATTRIBUTE_CITY_LAT = "city_lat";
+    public static final String ATTRIBUTE_CITY_LON = "city_lon";
+    public static final String ATTRIBUTE_CITY_COUNTRY_CODE = "city_country_code";
 
-    public City(String city, String country) {
-        this.city = city;
-        this.country = country;
+    public City(String id, String name, String lat, String lon, String countryCode) {
+        this.id = id;
+        this.name = name;
+        this.lat = lat;
+        this.lon = lon;
+        this.countryCode = countryCode;
     }
 
-    public String getCity() {
-        return city;
+    public String getId() {
+        return id;
     }
 
-    public void setCity(String city) {
-        this.city = city;
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getLat() {
+        return lat;
+    }
+
+    public void setLat(String lat) {
+        this.lat = lat;
+    }
+
+    public String getLon() {
+        return lon;
+    }
+
+    public void setLon(String lon) {
+        this.lon = lon;
+    }
+
+    public String getCountryCode() {
+        return countryCode;
+    }
+
+    public void setCountryCode(String countryCode) {
+        this.countryCode = countryCode;
     }
 
     @Override
@@ -31,30 +72,23 @@ public class City{
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        City city1 = (City) o;
+        City city = (City) o;
 
-        if (city != null ? !city.equals(city1.city) : city1.city != null) return false;
-        return country != null ? country.equals(city1.country) : city1.country == null;
+        if (id != null ? !id.equals(city.id) : city.id != null) return false;
+        if (name != null ? !name.equals(city.name) : city.name != null) return false;
+        if (lat != null ? !lat.equals(city.lat) : city.lat != null) return false;
+        if (lon != null ? !lon.equals(city.lon) : city.lon != null) return false;
+        return countryCode != null ? countryCode.equals(city.countryCode) : city.countryCode == null;
 
     }
 
     @Override
     public int hashCode() {
-        int result = city != null ? city.hashCode() : 0;
-        result = 31 * result + (country != null ? country.hashCode() : 0);
+        int result = id != null ? id.hashCode() : 0;
+        result = 31 * result + (name != null ? name.hashCode() : 0);
+        result = 31 * result + (lat != null ? lat.hashCode() : 0);
+        result = 31 * result + (lon != null ? lon.hashCode() : 0);
+        result = 31 * result + (countryCode != null ? countryCode.hashCode() : 0);
         return result;
-    }
-
-    public String getCountry() {
-        return country;
-    }
-
-    public void setCountry(String country) {
-        this.country = country;
-    }
-
-    @Override
-    public String toString() {
-        return this.city + "," + this.country;
     }
 }

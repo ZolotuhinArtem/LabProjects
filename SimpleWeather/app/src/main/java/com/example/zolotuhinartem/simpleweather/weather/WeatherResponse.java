@@ -3,6 +3,8 @@ package com.example.zolotuhinartem.simpleweather.weather;
 import com.example.zolotuhinartem.simpleweather.objects.City;
 import com.example.zolotuhinartem.simpleweather.weather.pojo.Weather;
 
+import java.util.Set;
+
 /**
  * Created by zolotuhinartem on 31.10.16.
  */
@@ -23,23 +25,11 @@ public class WeatherResponse {
         return city;
     }
 
-    public void setCity(City city) {
-        this.city = city;
-    }
-
     public Weather getWeather() {
         return weather;
     }
 
-    public void setWeather(Weather weather) {
-        this.weather = weather;
-    }
-
     public int getCode() {
         return code;
-    }
-
-    public void setCode(int code) {
-        this.code = code;
     }
 }

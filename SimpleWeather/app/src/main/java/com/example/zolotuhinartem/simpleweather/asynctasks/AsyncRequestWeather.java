@@ -44,7 +44,7 @@ public class AsyncRequestWeather extends AsyncTask<City, Void, WeatherResponse>{
                         .addConverterFactory(GsonConverterFactory.create())
                         .build();
                 OpenWeatherApi weatherApi = retrofit.create(OpenWeatherApi.class);
-                Call weatherCall = weatherApi.getWeather(city.toString(), OpenWeatherApi.API_ID);
+                Call weatherCall = weatherApi.getWeather(city.getId(), OpenWeatherApi.API_ID);
                 try {
                     Response response = weatherCall.execute();
                     code = response.code();
@@ -59,13 +59,12 @@ public class AsyncRequestWeather extends AsyncTask<City, Void, WeatherResponse>{
 
             }
         }
-
         return new WeatherResponse(null, null, code);
     }
 
     @Override
-    protected void onPostExecute(WeatherResponse weather) {
-        listener.onComplete(weather);
+    protected void onPostExecute(WeatherResponse weatherResponse) {
+        listener.onComplete(weatherResponse);
     }
 
     public interface OnCompleteListener {
