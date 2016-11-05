@@ -27,12 +27,8 @@ public class CityRepository {
     private Set<City> set;
 
     public static CityRepository getCityRepository(Context context) {
-        if (cityRepository != null) {
-            return cityRepository;
-        } else {
-            cityRepository = new CityRepository(context);
-            return cityRepository;
-        }
+        init(context);
+        return cityRepository;
     }
 
     private CityRepository(Context context) {
@@ -71,9 +67,14 @@ public class CityRepository {
 //            }
         }
     }
-
+    public static void init(Context context) {
+        if (cityRepository == null) {
+            cityRepository = new CityRepository(context);
+        }
+    }
     public Set<City> findByName(String name) {
         Set<City> result = new HashSet<>();
+        Set<City> alternativeResult = new HashSet<>();
 
         name = StringUtils.deleteSpaces(name).toLowerCase();
 
@@ -83,9 +84,13 @@ public class CityRepository {
             tempName = StringUtils.deleteSpaces(i.getName().toLowerCase());
             if (tempName.equals(name)) {
                 result.add(i);
+            } else {
+                if (tempName.contains(name)) {
+                    alternativeResult.add(i);
+                }
             }
         }
-
+        result.addAll(alternativeResult);
         return result;
     }
 

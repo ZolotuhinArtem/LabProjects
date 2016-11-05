@@ -33,7 +33,9 @@ public class AsyncFindCity extends AsyncTask<String, Void, Set<City>> {
                 if (strings[0] != null){
                     CityRepository cityRepository = CityRepository.getCityRepository(context);
                     Set<City> cities = cityRepository.findByName(strings[0]);
-                    return cities;
+                    if (cities != null) {
+                        return cities;
+                    }
                 }
             }
         }

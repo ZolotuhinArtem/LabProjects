@@ -2,8 +2,10 @@ package com.example.zolotuhinartem.simpleweather.activities;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -29,6 +31,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private CityAdapter adapter;
     private SharedPreferences sharedPreferences;
 
+    private FloatingActionButton flBtnAdd;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,15 +46,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         adapter.setListener(this);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
 
-        Button btnAdd = (Button) findViewById(R.id.btn_main_activity_add);
-        btnAdd.setOnClickListener(this);
+        flBtnAdd = (FloatingActionButton) findViewById(R.id.fl_btn_main_activity_add);
+        flBtnAdd.setOnClickListener(this);
+
+
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()){
-            case R.id.btn_main_activity_add:
+            case R.id.fl_btn_main_activity_add:
                 addClick();
                 break;
         }

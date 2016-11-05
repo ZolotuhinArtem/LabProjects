@@ -51,6 +51,15 @@ public class AddCityActivity extends AppCompatActivity implements View.OnClickLi
 
         rvCity = (RecyclerView) findViewById(R.id.rv_activity_add_city_founded);
         adapter = new FoundedCityAdapter(this);
+        adapter.setListener(new FoundedCityAdapter.OnAddClickListener() {
+            @Override
+            public void onAddClick(City city) {
+                Intent intent = AddCityActivity.this.getIntent();
+                intent = CityManager.fillIntent(intent, city);
+                AddCityActivity.this.setResult(1, intent);
+                finish();
+            }
+        });
 
         rvCity.setAdapter(adapter);
         rvCity.setLayoutManager(new LinearLayoutManager(this));

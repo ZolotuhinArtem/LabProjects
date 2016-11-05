@@ -20,6 +20,6 @@ public interface OpenWeatherApi {
     String BASE_URL = "http://api.openweathermap.org";
 
     @GET("data/2.5/weather")
-    Call<Weather> getWeather(@Query("q") String id, @Query("APPID") String appId);
+    Call<Weather> getWeather(@Query("id") String id, @Query("APPID") String appId);
 
 }

@@ -73,8 +73,17 @@ public class CityAdapter extends RecyclerView.Adapter<CityViewHolder> {
     }
     public void removeCity(City city) {
         if (city != null) {
+            int position = list.indexOf(city);
+            if (position >= 0) {
+                this.list.remove(position);
+                notifyItemRemoved(position);
+            }
+            /*
             this.list.remove(city);
             notifyDataSetChanged();
+            */
+
+
         }
 
 
