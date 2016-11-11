@@ -71,6 +71,7 @@ public class WatchWeatherActivity extends AppCompatActivity implements AsyncRequ
             }
             tvTemp.setText(sign + temp + " °C");
         } else {
+
             tvCity.setText("Error! code: " + weather.getCode());
             tvTemp.setText("");
         }
