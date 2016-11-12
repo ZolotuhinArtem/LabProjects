@@ -9,7 +9,6 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.Button;
 
 import com.example.zolotuhinartem.simpleweather.R;
 import com.example.zolotuhinartem.simpleweather.recyclerviewobjects.city.CityAdapter;

@@ -1,5 +1,6 @@
 package com.example.zolotuhinartem.simpleweather.activities;
 
+import android.app.FragmentManager;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -12,31 +13,32 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.zolotuhinartem.simpleweather.R;
-import com.example.zolotuhinartem.simpleweather.asynctasks.AsyncFindCity;
-import com.example.zolotuhinartem.simpleweather.asynctasks.AsyncRequestWeather;
+import com.example.zolotuhinartem.simpleweather.fragmenttask.FindCityTaskFragment;
+import com.example.zolotuhinartem.simpleweather.fragmenttask.callback.FindCityCallback;
+import com.example.zolotuhinartem.simpleweather.hoderfragments.CitySetHolderFragment;
 import com.example.zolotuhinartem.simpleweather.objects.City;
 import com.example.zolotuhinartem.simpleweather.objects.utils.CityManager;
 import com.example.zolotuhinartem.simpleweather.recyclerviewobjects.foundedcity.FoundedCityAdapter;
-import com.example.zolotuhinartem.simpleweather.repositories.CityRepository;
 import com.example.zolotuhinartem.simpleweather.utils.SetToListConvertor;
-import com.example.zolotuhinartem.simpleweather.weather.WeatherResponse;
-import com.example.zolotuhinartem.simpleweather.weather.pojo.Weather;
 
-import java.util.HashSet;
 import java.util.Set;
 
-public class AddCityActivity extends AppCompatActivity implements View.OnClickListener, AsyncFindCity.OnCompleteListener{
+public class AddCityActivity extends AppCompatActivity implements View.OnClickListener, FindCityCallback{
 
     private EditText etCityName;
     private ProgressBar progressBar;
     private Button btnSearch, btnCancel;
     private RecyclerView rvCity;
     private FoundedCityAdapter adapter;
+    private FindCityTaskFragment findCityTaskFragment;
+    private CitySetHolderFragment citySetHolderFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_city);
+
+        FragmentManager fragmentManager = getFragmentManager();
 
         progressBar = (ProgressBar) findViewById(R.id.pb_activity_add);
 
@@ -63,17 +65,34 @@ public class AddCityActivity extends AppCompatActivity implements View.OnClickLi
 
         rvCity.setAdapter(adapter);
         rvCity.setLayoutManager(new LinearLayoutManager(this));
+
+
+
+        findCityTaskFragment = (FindCityTaskFragment) fragmentManager.findFragmentByTag(FindCityTaskFragment.class.getName());
+        if (findCityTaskFragment == null) {
+            findCityTaskFragment = new FindCityTaskFragment();
+            fragmentManager.beginTransaction().add(findCityTaskFragment, FindCityTaskFragment.class.getName()).commit();
+        }
+
+        citySetHolderFragment = (CitySetHolderFragment) fragmentManager.findFragmentByTag(CitySetHolderFragment.class.getName());
+        if (citySetHolderFragment == null) {
+            citySetHolderFragment = new CitySetHolderFragment();
+            fragmentManager.beginTransaction().add(citySetHolderFragment, CitySetHolderFragment.class.getName()).commit();
+        }
+
+        this.setCitySet(citySetHolderFragment.getCitySet());
+        setProgress(findCityTaskFragment.isWorking());
+
+
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_activity_add_city_search:
-                setProgress(true);
                 String name = etCityName.getText().toString();
-                AsyncFindCity asyncFindCity = new AsyncFindCity(this);
-                asyncFindCity.setListener(this);
-                asyncFindCity.execute(name);
+                findCityTaskFragment.execute(name);
+                setProgress(findCityTaskFragment.isWorking());
 
             break;
             case R.id.btn_activity_add_city_cancel:
@@ -86,6 +105,15 @@ public class AddCityActivity extends AppCompatActivity implements View.OnClickLi
     }
 
 
+    private void setCitySet(Set<City> set){
+        if (this.citySetHolderFragment != null) {
+            citySetHolderFragment.setCitySet(set);
+        }
+
+        if (this.adapter != null) {
+            adapter.setList(SetToListConvertor.setToList(set));
+        }
+    }
 
     private void  showError (String message) {
         Toast.makeText(AddCityActivity.this, message, Toast.LENGTH_LONG).show();
@@ -109,7 +137,7 @@ public class AddCityActivity extends AppCompatActivity implements View.OnClickLi
 
 
     @Override
-    public void onComplete(Set<City> cities) {
+    public void resultFindCity(Set<City> cities) {
         setProgress(false);
         if (cities == null) {
             this.showError("Not found!");
@@ -117,7 +145,7 @@ public class AddCityActivity extends AppCompatActivity implements View.OnClickLi
             if (cities.size() == 0) {
                 this.showError("Not found!");
             }
-            adapter.setList(SetToListConvertor.setToList(cities));
+            this.setCitySet(cities);
         }
 
     }

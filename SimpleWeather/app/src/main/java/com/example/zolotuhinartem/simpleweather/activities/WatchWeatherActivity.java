@@ -1,5 +1,6 @@
 package com.example.zolotuhinartem.simpleweather.activities;
 
+import android.app.FragmentManager;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -8,19 +9,28 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.zolotuhinartem.simpleweather.R;
-import com.example.zolotuhinartem.simpleweather.asynctasks.AsyncRequestWeather;
+import com.example.zolotuhinartem.simpleweather.fragmenttask.RequestWeatherTaskFragment;
+import com.example.zolotuhinartem.simpleweather.fragmenttask.callback.RequestWeatherCallback;
 import com.example.zolotuhinartem.simpleweather.objects.City;
 import com.example.zolotuhinartem.simpleweather.objects.utils.CityManager;
 import com.example.zolotuhinartem.simpleweather.weather.WeatherResponse;
-import com.example.zolotuhinartem.simpleweather.weather.pojo.Weather;
 
-public class WatchWeatherActivity extends AppCompatActivity implements AsyncRequestWeather.OnCompleteListener{
+public class WatchWeatherActivity extends AppCompatActivity implements RequestWeatherCallback {
+
+
+    public static final String IS_CALLED = "is_called";
+    public static final String CITY_NAME = "city_name";
+    public static final String CITY_TEMPERATURE = "city_temperature";
+
 
     private ProgressBar progressBar;
 
     private TextView tvCity, tvTemp;
 
     private View vInfo;
+    private RequestWeatherTaskFragment requestWeatherTaskFragment;
+
+    private boolean isCalled;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,15 +46,43 @@ public class WatchWeatherActivity extends AppCompatActivity implements AsyncRequ
 
         Intent intent = getIntent();
         City city = CityManager.getFromIntent(intent);
-        if (city != null) {
-            setProgress(true);
-            AsyncRequestWeather asyncRequestWeather = new AsyncRequestWeather(this);
-            asyncRequestWeather.execute(city);
+
+        if (savedInstanceState != null) {
+            isCalled = true;
+            loadInstance(savedInstanceState);
         } else {
-            finish();
+            isCalled = false;
         }
 
+        FragmentManager fragmentManager = getFragmentManager();
 
+        requestWeatherTaskFragment = (RequestWeatherTaskFragment) fragmentManager.findFragmentByTag(RequestWeatherTaskFragment.class.getName());
+
+        if (requestWeatherTaskFragment == null) {
+            requestWeatherTaskFragment = new RequestWeatherTaskFragment();
+            fragmentManager.beginTransaction().add(requestWeatherTaskFragment, RequestWeatherTaskFragment.class.getName()).commit();
+        }
+
+        if (!isCalled) {
+            requestWeatherTaskFragment.execute(city);
+            isCalled = true;
+        }
+
+        setProgress(requestWeatherTaskFragment.isWorking());
+
+
+    }
+
+    private void loadInstance(Bundle savedInstanceState) {
+        tvCity.setText(savedInstanceState.getString(CITY_NAME, "%ERROR%"));
+        tvTemp.setText(savedInstanceState.getString(CITY_TEMPERATURE, "%ERROR%"));
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString(CITY_NAME, tvCity.getText().toString());
+        outState.putString(CITY_TEMPERATURE, tvTemp.getText().toString());
     }
 
     private void setProgress(boolean progress) {
@@ -59,12 +97,12 @@ public class WatchWeatherActivity extends AppCompatActivity implements AsyncRequ
 
 
     @Override
-    public void onComplete(WeatherResponse weather) {
+    public void resultRequestWeather(WeatherResponse weather) {
         setProgress(false);
         int code = weather.getCode();
         if (code < 400) {
             tvCity.setText(weather.getCity().getName());
-            int temp = (int)Math.round(weather.getWeather().getMain().getTemp() - 273.15) ;
+            int temp = (int) Math.round(weather.getWeather().getMain().getTemp() - 273.15);
             String sign = "";
             if (temp > 0) {
                 sign = "+";
